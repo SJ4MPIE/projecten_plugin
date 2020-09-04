@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: My event organisator plugin
+ * Plugin Name: Projecten-plugin
 * Plugin URI: samtieman.com
 * Description: This plugin will help organising projects on your website
 * Author: Samuel W.R. Tieman
 * Author URI: samtieman.com
 * Version: 0.0.1
-* Text Domain: project-plugin
+* Text Domain: projecten-plugin
 * Domain Path: languages
 *
 * This is distributed in the hope that it will be useful,
