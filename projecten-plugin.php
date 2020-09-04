@@ -21,4 +21,18 @@
 // Define the plugin name:
 define ( 'PROJECTEN_PLUGIN', __FILE__ );
 
+// Include the general definition file:
+require_once plugin_dir_path( __FILE__ ) . 'includes/defs.php';
+
+class ProjectenPlugin {
+    public function __construct() {
+
+    }
+
+}
+
+// Instantiate the class
+$projecten_plugin = new ProjectenPlugin();
+
+
 ?>
