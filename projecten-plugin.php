@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Projecten-plugin
 * Plugin URI: samtieman.com
-* Description: This plugin will help organising projects on your website
+* Description: This plugin will help organise projects on your website
 * Author: Samuel W.R. Tieman
 * Author URI: samtieman.com
 * Version: 0.0.1
