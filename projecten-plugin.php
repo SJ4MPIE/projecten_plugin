@@ -26,7 +26,44 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/defs.php';
 
 class ProjectenPlugin {
     public function __construct() {
+        // Fire a hook before the class is setup.
+        do_action( 'projecten_plugin_pre_init' );
+        // Load the plugin.
+        add_action( 'init', array( $this, 'init' ), 1 );
+    }
 
+    /**
+    * Loads the plugin into WordPress.
+    *
+    * @since 1.0.0
+    */
+    public function init() {
+        // Run hook once Plugin has been initialized.
+        do_action( 'projecten_plugin_init' );
+        // Load admin only components.
+        if (is_admin()) {
+            // Load all admin specific includes
+            $this->requireAdmin();
+            // Setup admin page
+            $this->createAdmin();
+        }
+    }
+    /**
+    * Loads all admin related files into scope.
+    *
+    * @since 1.0.0
+    */
+
+    public function requireAdmin() {
+        // Admin controller file
+        require_once PROJECTEN_PLUGIN_ADMIN_DIR.'/ProjectenPlugin_AdminController.php';
+    }
+
+    /**
+    * Admin controller functionality
+    */
+    public function createAdmin(){
+        ProjectenPlugin_AdminController::prepare();
     }
 
 }
