@@ -1,6 +1,8 @@
-<?php require_once "PROJECTEN_PLUGIN_MODEL_DIR" . "/project.php"; ?>
+<?php require_once PROJECTEN_PLUGIN_MODEL_DIR . "/project.php"; ?>
 <?php
 $project = new Project;
+// Get form vars
+$post_inputs = $project->getPostValues();
 
 ?>
 
@@ -9,7 +11,17 @@ $project = new Project;
 <form method="post">
     <input type="text" name="voornaam" placeholder="voornaam">
     <input type="text" name="achternaam" placeholder="achternaam">
-    <input type="text" name="e-mail" placeholder="email">
+    <input type="text" name="email" placeholder="email">
     <input type="text" name="telefoon_nr" placeholder="telefoon nr">
-    <input type="submit" value="verzenden">
+    <textarea name="project_omschrijving" cols="30" rows="10"></textarea>
+    <input type="submit" name="verzenden">
 </form>
+
+<?php 
+if(isset($_POST['verzenden'])){
+    $telnr = strval($post_inputs['telefoon_nr']);
+    $project->save($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], (string) $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving']);
+
+}
+
+?>
