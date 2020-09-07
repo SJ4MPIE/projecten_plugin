@@ -19,7 +19,6 @@ $post_inputs = $project->getPostValues();
 
 <?php 
 if(isset($_POST['verzenden'])){
-    $telnr = strval($post_inputs['telefoon_nr']);
     $project->save($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], (string) $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving']);
 
 }

@@ -18,7 +18,7 @@ class Project
             echo "<tr><td>" . $row['id'] . "</td>";
             echo "<td>" . $row['voornaam'] . "</td>";
             echo "<td>" . $row['achternaam'] . "</td>";
-            echo "<td>" . $row['e-mail'] . "</td>";
+            echo "<td>" . $row['email'] . "</td>";
             echo "<td>" . $row['telefoon_nr'] . "</td>";
             echo "<td>" . $row['project_omschrijving'] . "</td>";
             echo "<td>" . "<a href='admin.php?page=projecten+plugin?value=decline'> Decline </a>" . "</td>";
@@ -34,7 +34,7 @@ class Project
             echo "<tr><td>" . $row['id'] . "</td>";
             echo "<td>" . $row['voornaam'] . "</td>";
             echo "<td>" . $row['achternaam'] . "</td>";
-            echo "<td>" . $row['e-mail'] . "</td>";
+            echo "<td>" . $row['email'] . "</td>";
             echo "<td>" . $row['telefoon_nr'] . "</td>";
             echo "<td>" . $row['project_omschrijving'] . "</td>";
             echo "<td>" . "<a href='admin.php?page=projecten+plugin?value=delete'> Delete </a>" . "</td>";
@@ -81,19 +81,11 @@ class Project
         global $wpdb;
         if (isset($_POST['verzenden'])) {
             $sql = $wpdb->prepare("INSERT INTO pp_new_projects(`voornaam`, `achternaam`, `email`, `telefoon_nr`, `project_omschrijving`) VALUES ('$voornaam','$achternaam','$email','$telnr', '$project_omschrijving') ");
-        //   $sql = $wpdb->insert("pp_new_projects", array(
-        //     "voornaam" => $voornaam,
-        //     "achternaam" => $achternaam,
-        //     "email" => $email,
-        //     "telefoon_nr" => $telnr,
-        //     "project_omschrijving" => $project_omschrijving,
-
-        //    ));
            $wpdb->query($sql);
         }
 
-        echo "</br>". "Query executed is".$wpdb->last_query;
-        echo "</br>". "Last error".$wpdb->last_error;
+        // echo "</br>". "Query executed is".$wpdb->last_query;
+        // echo "</br>". "Last error".$wpdb->last_error;
 
     }
 }
