@@ -2,53 +2,14 @@
 class Project
 {
 
-
-
-
-
-
-
-    public function getNewProjects()
-    {
-        global $wpdb;
-        $result_new = $wpdb->get_results("SELECT * FROM pp_new_projects", ARRAY_A);
-
-
-        foreach ($result_new as $row) {
-            echo "<tr><td>" . $row['id'] . "</td>";
-            echo "<td>" . $row['voornaam'] . "</td>";
-            echo "<td>" . $row['achternaam'] . "</td>";
-            echo "<td>" . $row['email'] . "</td>";
-            echo "<td>" . $row['telefoon_nr'] . "</td>";
-            echo "<td>" . $row['project_omschrijving'] . "</td>";
-            echo "<td>" . "<a href='admin.php?page=projecten+plugin?value=decline'> Decline </a>" . "</td>";
-            echo "<td>" . "<a href='admin.php?page=projecten+plugin?value=approve'> Approve </a>" . "</td>";
-        }
-    }
-
-    public function getApprovedProjects()
-    {
-        global $wpdb;
-        $result_approved = $wpdb->get_results("SELECT * FROM pp_approved_projects", ARRAY_A);
-        foreach ($result_approved as $row) {
-            echo "<tr><td>" . $row['id'] . "</td>";
-            echo "<td>" . $row['voornaam'] . "</td>";
-            echo "<td>" . $row['achternaam'] . "</td>";
-            echo "<td>" . $row['email'] . "</td>";
-            echo "<td>" . $row['telefoon_nr'] . "</td>";
-            echo "<td>" . $row['project_omschrijving'] . "</td>";
-            echo "<td>" . "<a href='admin.php?page=projecten+plugin?value=delete'> Delete </a>" . "</td>";
-            echo "<td>" . "<a href='admin.php?page=projecten+plugin?value=update'> Update </a>" . "</td>";
-        }
-    }
-
-      /**
+    /**
      * getPostValues :
      * Filter input and retrieve POST input params
      *
      * @return array containing known POST input fields
      */
-    public function getPostValues() {
+    public function getPostValues()
+    {
 
         // Define the check for params
         $post_check_array = array(
@@ -81,11 +42,27 @@ class Project
         global $wpdb;
         if (isset($_POST['verzenden'])) {
             $sql = $wpdb->prepare("INSERT INTO pp_new_projects(`voornaam`, `achternaam`, `email`, `telefoon_nr`, `project_omschrijving`) VALUES ('$voornaam','$achternaam','$email','$telnr', '$project_omschrijving') ");
-           $wpdb->query($sql);
+            $wpdb->query($sql);
         }
 
         // echo "</br>". "Query executed is".$wpdb->last_query;
         // echo "</br>". "Last error".$wpdb->last_error;
 
+    }
+
+
+    public function delete()
+    {
+        $tablename = null;
+        if (isset($_GET['delete'])) {
+            if (isset($_GET['new'])) {
+                $tablename =  'pp_new_projects';
+            } else {
+                $tablename = 'pp_approved_projects';
+            }
+            global $wpdb;
+            $project_id = $_GET['id'];
+            $wpdb->query("DELETE FROM $tablename WHERE ID = '$project_id'");
+        }
     }
 }

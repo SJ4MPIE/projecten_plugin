@@ -19,8 +19,21 @@ $project = new Project;
             </tr>
         </thead>
         <tbody>
-            <?php   
-            $project->getNewProjects();
+            <?php
+            global $wpdb;
+            $result_new = $wpdb->get_results("SELECT * FROM pp_new_projects", ARRAY_A);
+            foreach ($result_new as $row) {
+                $pp_new_id = $row['id'];
+                echo "<tr><td>" . $row['id'] . "</td>";
+                echo "<td>" . $row['voornaam'] . "</td>";
+                echo "<td>" . $row['achternaam'] . "</td>";
+                echo "<td>" . $row['email'] . "</td>";
+                echo "<td>" . $row['telefoon_nr'] . "</td>";
+                echo "<td>" . $row['project_omschrijving'] . "</td>";
+                echo "<td>" . "<a href='admin.php?page=projecten+plugin&delete&id={$pp_new_id}&new'> Delete </a>" . "</td>";
+                echo "<td>" . "<a href='admin.php?page=projecten+plugin&update&id={$pp_new_id}&new'> Update </a>" . "</td>";
+            }
+            // $project->
             ?>
         </tbody>
     </table>
@@ -38,7 +51,21 @@ $project = new Project;
         </thead>
         <tbody>
             <?php
-            $project->getApprovedProjects()
+            global $wpdb;
+            $result_approved = $wpdb->get_results("SELECT * FROM pp_approved_projects", ARRAY_A);
+            foreach ($result_approved as $row) {
+                $pp_approved_id = $row['id'];
+                echo "<tr><td>" . $row['id'] . "</td>";
+                echo "<td>" . $row['voornaam'] . "</td>";
+                echo "<td>" . $row['achternaam'] . "</td>";
+                echo "<td>" . $row['email'] . "</td>";
+                echo "<td>" . $row['telefoon_nr'] . "</td>";
+                echo "<td>" . $row['project_omschrijving'] . "</td>";
+                echo "<td>" . "<a href='admin.php?page=projecten+plugin&delete&id={$pp_approved_id}&approved'> Delete </a>" . "</td>";
+                echo "<td>" . "<a href='admin.php?page=projecten+plugin&update&id={$pp_approved_id}&approved'> Update </a>" . "</td>";
+            }
+
+            $project->delete();
             ?>
         </tbody>
     </table>
