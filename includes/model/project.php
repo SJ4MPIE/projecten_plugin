@@ -41,7 +41,7 @@ class Project
     {
         global $wpdb;
         if (isset($_POST['verzenden'])) {
-            $sql = $wpdb->prepare("INSERT INTO pp_new_projects(`voornaam`, `achternaam`, `email`, `telefoon_nr`, `project_omschrijving`) VALUES ('$voornaam','$achternaam','$email','$telnr', '$project_omschrijving') ");
+            $sql = $wpdb->prepare("INSERT INTO pp_projects(`voornaam`, `achternaam`, `email`, `telefoon_nr`, `project_omschrijving`) VALUES ('$voornaam','$achternaam','$email','$telnr', '$project_omschrijving') ");
             $wpdb->query($sql);
         }
 
@@ -53,16 +53,28 @@ class Project
 
     public function delete()
     {
-        $tablename = null;
         if (isset($_GET['delete'])) {
-            if (isset($_GET['new'])) {
-                $tablename =  'pp_new_projects';
-            } else {
-                $tablename = 'pp_approved_projects';
-            }
             global $wpdb;
             $project_id = $_GET['id'];
-            $wpdb->query("DELETE FROM $tablename WHERE ID = '$project_id'");
+            $wpdb->query("DELETE FROM pp_projects WHERE ID = '$project_id'");
         }
     }
+
+
+    public function updateStatus(){
+        if(isset($_GET['approve'])){
+            global $wpdb;
+            $project_id = $_GET['id'];
+            $wpdb->query("UPDATE pp_projects SET status_id = 1 WHERE id = '$project_id'");
+
+        } else {
+            global $wpdb;
+            $project_id = $_GET['id'];
+            $wpdb->query("UPDATE pp_projects SET status_id = 2 WHERE id = '$project_id'");
+        }
+
+        // echo "</br>". "Query executed is".$wpdb->last_query;
+        // echo "</br>". "Last error".$wpdb->last_error;
+    }
+
 }

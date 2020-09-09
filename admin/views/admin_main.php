@@ -16,24 +16,33 @@ $project = new Project;
                 <th>E-mail</th>
                 <th>Telefoon-nr</th>
                 <th>Project omschrijving</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
             <?php
             global $wpdb;
-            $result_new = $wpdb->get_results("SELECT * FROM pp_new_projects", ARRAY_A);
+            $result_new = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk" , ARRAY_A);
             foreach ($result_new as $row) {
-                $pp_new_id = $row['id'];
+                $pp_id = $row['id'];
+        
                 echo "<tr><td>" . $row['id'] . "</td>";
                 echo "<td>" . $row['voornaam'] . "</td>";
                 echo "<td>" . $row['achternaam'] . "</td>";
                 echo "<td>" . $row['email'] . "</td>";
                 echo "<td>" . $row['telefoon_nr'] . "</td>";
                 echo "<td>" . $row['project_omschrijving'] . "</td>";
-                echo "<td>" . "<a href='admin.php?page=projecten+plugin&delete&id={$pp_new_id}&new'> Delete </a>" . "</td>";
-                echo "<td>" . "<a href='admin.php?page=projecten+plugin&update&id={$pp_new_id}&new'> Update </a>" . "</td>";
+                echo "<td>" . $row['status'] . "</td>";
+            
+                if($row['status'] ==  'Geen status'){
+                    echo "<td>" . "<a href='admin.php?page=projecten+plugin&approve&id={$pp_id}&new'> Approve </a>" . "</td>";
+                    echo "<td>" . "<a href='admin.php?page=projecten+plugin&decline&id={$pp_id}&new'> Decline </a>" . "</td>";
+                }
             }
-            // $project->
+
+            // var_dump($result_new);
+            // echo "</br>". "Query executed is".$wpdb->last_query;
+            // echo "</br>". "Last error".$wpdb->last_error;
             ?>
         </tbody>
     </table>
@@ -47,25 +56,28 @@ $project = new Project;
                 <th>E-mail</th>
                 <th>Telefoon-nr</th>
                 <th>Project omschrijving</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
             <?php
             global $wpdb;
-            $result_approved = $wpdb->get_results("SELECT * FROM pp_approved_projects", ARRAY_A);
+            $result_approved = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk WHERE pp_projects.status_id = 1", ARRAY_A);
             foreach ($result_approved as $row) {
-                $pp_approved_id = $row['id'];
+                $pp_id = $row['id'];
                 echo "<tr><td>" . $row['id'] . "</td>";
                 echo "<td>" . $row['voornaam'] . "</td>";
                 echo "<td>" . $row['achternaam'] . "</td>";
                 echo "<td>" . $row['email'] . "</td>";
                 echo "<td>" . $row['telefoon_nr'] . "</td>";
                 echo "<td>" . $row['project_omschrijving'] . "</td>";
-                echo "<td>" . "<a href='admin.php?page=projecten+plugin&delete&id={$pp_approved_id}&approved'> Delete </a>" . "</td>";
-                echo "<td>" . "<a href='admin.php?page=projecten+plugin&update&id={$pp_approved_id}&approved'> Update </a>" . "</td>";
+                echo "<td>" . $row['status'] . "</td>";
+                echo "<td>" . "<a href='admin.php?page=projecten+plugin&delete&id={$pp_id}'> Delete </a>" . "</td>";
+                echo "<td>" . "<a href='admin.php?page=projecten+plugin&update&id={$pp_id}'> Update </a>" . "</td>";
             }
 
             $project->delete();
+            $project->updateStatus();
             ?>
         </tbody>
     </table>
