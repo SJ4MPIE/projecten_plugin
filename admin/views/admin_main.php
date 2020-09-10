@@ -88,20 +88,30 @@ $post_inputs = $project->getPostValues();
         $project->delete();
         $project->updateStatus();
         if (isset($_GET['update'])) {
+            $this_id = $_GET['id'];
         ?>
             <h1>Update project</h1>
             <form method="post" class="form-group">
-                <input class="form-control" type="text" name="voornaam" value="<?php echo $project->getFirstName($pp_id); ?>" placeholder="voornaam">
-                <input class="form-control" type="text" name="achternaam" placeholder="achternaam">
-                <input class="form-control" type="text" name="email" placeholder="email">
-                <input class="form-control" type="text" name="telefoon_nr" placeholder="telefoon nr">
+                <input class="form-control" type="text" name="voornaam" value="<?php echo $project->getFirstName($this_id); ?>" placeholder="voornaam">
+                <input class="form-control" type="text" name="achternaam" value="<?php echo $project->getLastName($this_id); ?>" placeholder="achternaam">
+                <input class="form-control" type="text" name="email" value="<?php echo $project->getEmail($this_id); ?>" placeholder="email">
+                <input class="form-control" type="text" name="telefoon" value="<?php echo $project->getTelNr($this_id); ?>"  placeholder="telefoon nr">
                 <textarea name="project_omschrijving" cols="30" rows="10"></textarea>
-                <input type="submit" name="verzenden">
+                <input type="submit" name="Update">
             </form>
         <?php
-            echo $project->getFirstName($pp_id);
-            $project->update($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], (string) $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving']);
-        }
+         }
+            $this_id = $_GET['id'];
+            if($_POST["Update"]){
+                $project->updateProject($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], (string) $post_inputs['telefoon'], $post_inputs['project_omschrijving'], $this_id);
+                }
+
+                echo "</br>" . "Query executed is" . $wpdb->last_query;
+            echo "</br>" . "Last error" . $wpdb->last_error;
+            
+            var_dump($post_inputs);
+            
+        
         ?>
         </tbody>
 

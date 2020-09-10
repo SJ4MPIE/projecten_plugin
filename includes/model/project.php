@@ -19,9 +19,9 @@ class Project
             // event type name.
             'achternaam' => array('filter' => FILTER_SANITIZE_STRING),
             // Help text
-            'email' => array('filter' => FILTER_SANITIZE_STRING),
+            'email' => array('filter' => FILTER_SANITIZE_EMAIL),
             // Id of current row
-            'telefoon_nr' => array('filter' => FILTER_SANITIZE_STRING),
+            'telefoon' => array('filter' => FILTER_SANITIZE_STRING),
 
             'project_omschrijving' => array('filter' => FILTER_SANITIZE_STRING)
         );
@@ -79,21 +79,55 @@ class Project
         echo "</br>" . "Last error" . $wpdb->last_error;
     }
 
-    public function update($pp_id)
-    {
-        $pp_id;
+    public function updateProject($voornaam, $achternaam, $email, $telnr, $project_omschrijving, $id){
+
+        global $wpdb; 
+        var_dump($voornaam);
+       //$wpdb->prepare($wpdb->update("pp_projects" , array('voornaam' => $voornaam, 'achternaam' => $achternaam, 'email' => $email, 'telnr' => $telnr, 'project_omschrijving' => $project_omschrijving), array('id' => $id), array($voornaam, $achternaam, $email, $telnr, $project_omschrijving)));
+        $wpdb->query("UPDATE pp_projects SET voornaam = '$voornaam', achternaam = '$achternaam', email = '$email', telefoon_nr = '$telnr', project_omschrijving = '$project_omschrijving' WHERE id = $id");
     }
 
     public function getFirstName($pp_id)
     {
-        global $wpdb;
-        $result_query = $wpdb->get_results("SELECT voornaam FROM pp_projects WHERE id = $pp_id", ARRAY_A);
-        var_dump($result_query);
+            global $wpdb;
+            $result_query = $wpdb->get_results("SELECT voornaam FROM pp_projects WHERE id = $pp_id LIMIT 1", ARRAY_A);
+            foreach($result_query as $row){
+                return $row['voornaam'];
+            }
 
-        foreach($result_query as $row){
-            $firstname = $row['voornaam'];
-        }
-        global $firstname;
-        return $firstname;
     }
+
+    public function getLastName($pp_id)
+    {
+            global $wpdb;
+            $result_query = $wpdb->get_results("SELECT achternaam FROM pp_projects WHERE id = $pp_id LIMIT 1", ARRAY_A);
+            foreach($result_query as $row){
+                return $row['achternaam'];
+            }
+
+    }
+
+    public function getEmail($pp_id)
+    {
+            global $wpdb;
+            $result_query = $wpdb->get_results("SELECT email FROM pp_projects WHERE id = $pp_id LIMIT 1", ARRAY_A);
+            foreach($result_query as $row){
+                return $row['email'];
+            }
+
+    }
+
+    
+    public function getTelNr($pp_id)
+    {
+            global $wpdb;
+            $result_query = $wpdb->get_results("SELECT telefoon_nr FROM pp_projects WHERE id = $pp_id LIMIT 1", ARRAY_A);
+            foreach($result_query as $row){
+                return $row['telefoon_nr'];
+            }
+
+    }
+
+    
+
 }
