@@ -53,16 +53,10 @@ class Project
 
     public function delete()
     {
-        $tablename = null;
         if (isset($_GET['delete'])) {
-            if (isset($_GET['new'])) {
-                $tablename =  'pp_new_projects';
-            } else {
-                $tablename = 'pp_approved_projects';
-            }
             global $wpdb;
             $project_id = $_GET['id'];
-            $wpdb->query("DELETE FROM $tablename WHERE ID = '$project_id'");
+            $wpdb->query("DELETE FROM pp_projects WHERE ID = '$project_id'");
         }
     }
 }
