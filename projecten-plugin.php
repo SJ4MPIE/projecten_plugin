@@ -25,6 +25,9 @@ define('PROJECTEN_PLUGIN', __FILE__);
 // Include the general definition file:
 require_once plugin_dir_path(__FILE__) . 'includes/defs.php';
 
+require_once PROJECTEN_PLUGIN_MODEL_DIR . '/project.php';
+$project = new Project;
+
 class ProjectenPlugin
 {
     public function __construct()
@@ -54,7 +57,14 @@ class ProjectenPlugin
 
         // Load the view shortcodes 
         $this->loadViews();
+
+            global $project;
+            $project->createMainTable();
+            $project->createStatusTable();
+            // $project->insertStatusValues();
     }
+
+    
     /**
      * Loads all admin related files into scope.
      *

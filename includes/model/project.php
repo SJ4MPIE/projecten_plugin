@@ -31,6 +31,33 @@ class Project
         return $inputs;
     }
 
+    public function createMainTable(){
+        global $wpdb;
+        $wpdb->query("CREATE TABLE `projecten_plugin`. `pp_projects`( `id` INT NOT NULL AUTO_INCREMENT , `voornaam` VARCHAR(255) NOT NULL , `achternaam` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NOT NULL , `telefoon_nr` VARCHAR(255) NOT NULL , `project_omschrijving` TEXT NOT NULL , `status_id` INT NOT NULL DEFAULT '1' , PRIMARY KEY (`id`)) ENGINE = InnoDB;");
+    }
+
+    public function createStatusTable(){
+        global $wpdb;
+        $wpdb->query("CREATE TABLE `projecten_plugin`.`pp_status` ( `status_id_pk` INT NOT NULL AUTO_INCREMENT , `status` VARCHAR(255) NOT NULL , PRIMARY KEY (`status_id_pk`)) ENGINE = InnoDB; ");
+    }
+
+    // public function insertStatusValues(){
+    //         global $wpdb;
+    //         $count =  $wpdb->get_results("SELECT COUNT(status_id_pk) FROM pp_status", ARRAY_A);
+    //         foreach($count as $row){
+    //             $counted_rows = $row["COUNT(status_id_pk)"];
+    //             return $counted_rows;
+    //         }
+    //         if($counted_rows ) {
+    //             $wpdb->query("INSERT INTO `pp_status` (`status_id_pk`, `status`) VALUES (NULL, 'Geen status'), (NULL, 'Goedgekeurd'), (NULL, 'Afgekeurd') LIMIT 3");
+
+    //         }
+    //         return $counted_rows;
+        
+    // }
+
+    
+
 
     /**      
      *getPostValues :      
