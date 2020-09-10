@@ -61,20 +61,37 @@ class Project
     }
 
 
-    public function updateStatus(){
-        if(isset($_GET['approve'])){
+    public function updateStatus()
+    {
+        if (isset($_GET['approve'])) {
             global $wpdb;
             $project_id = $_GET['id'];
             $wpdb->query("UPDATE pp_projects SET status_id = 1 WHERE id = '$project_id'");
-
-        } else {
+        } elseif ($_GET['decline']) {
             global $wpdb;
             $project_id = $_GET['id'];
             $wpdb->query("UPDATE pp_projects SET status_id = 2 WHERE id = '$project_id'");
+        } else {
+            return null;
         }
 
-        // echo "</br>". "Query executed is".$wpdb->last_query;
-        // echo "</br>". "Last error".$wpdb->last_error;
+        echo "</br>" . "Query executed is" . $wpdb->last_query;
+        echo "</br>" . "Last error" . $wpdb->last_error;
     }
 
+    public function update($pp_id)
+    {
+        $pp_id;
+    }
+
+    public function getFirstName($pp_id)
+    {
+        global $wpdb;
+        $result_query = $wpdb->get_results("SELECT voornaam FROM pp_projects WHERE id = $pp_id", ARRAY_A);
+        var_dump($result_query);
+
+        foreach($result_query as $row){
+            r
+        }
+    }
 }
