@@ -99,7 +99,7 @@ $post_inputs = $project->getPostValues();
                 <input type="submit" name="verzenden">
             </form>
         <?php
-            echo $project->getFirstname($pp_id);
+            echo $project->getFirstName($pp_id);
             $project->update($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], (string) $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving']);
         }
         ?>

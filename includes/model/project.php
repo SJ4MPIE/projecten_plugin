@@ -91,7 +91,9 @@ class Project
         var_dump($result_query);
 
         foreach($result_query as $row){
-            r
+            $firstname = $row['voornaam'];
         }
+        global $firstname;
+        return $firstname;
     }
 }
