@@ -19,8 +19,10 @@ $post_inputs = $project->getPostValues();
 
 <?php 
 if(isset($_POST['verzenden'])){
-    $project->save($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], (string) $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving']);
+    $project->save($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving']);
 
 }
+        echo "</br>". "Query executed is".$wpdb->last_query;
+        echo "</br>". "Last error".$wpdb->last_error;
 
 ?>

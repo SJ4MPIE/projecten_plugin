@@ -21,7 +21,7 @@ class Project
             // Help text
             'email' => array('filter' => FILTER_SANITIZE_EMAIL),
             // Id of current row
-            'telefoon' => array('filter' => FILTER_SANITIZE_STRING),
+            'telefoon_nr' => array('filter' => FILTER_SANITIZE_STRING),
 
             'project_omschrijving' => array('filter' => FILTER_SANITIZE_STRING)
         );
@@ -45,8 +45,6 @@ class Project
             $wpdb->query($sql);
         }
 
-        // echo "</br>". "Query executed is".$wpdb->last_query;
-        // echo "</br>". "Last error".$wpdb->last_error;
 
     }
 
@@ -67,23 +65,18 @@ class Project
             global $wpdb;
             $project_id = $_GET['id'];
             $wpdb->query("UPDATE pp_projects SET status_id = 1 WHERE id = '$project_id'");
-        } elseif ($_GET['decline']) {
+        } elseif (isset($_GET['decline'])) {
             global $wpdb;
             $project_id = $_GET['id'];
             $wpdb->query("UPDATE pp_projects SET status_id = 2 WHERE id = '$project_id'");
         } else {
             return null;
         }
-
-        echo "</br>" . "Query executed is" . $wpdb->last_query;
-        echo "</br>" . "Last error" . $wpdb->last_error;
     }
 
     public function updateProject($voornaam, $achternaam, $email, $telnr, $project_omschrijving, $id){
 
         global $wpdb; 
-        var_dump($voornaam);
-       //$wpdb->prepare($wpdb->update("pp_projects" , array('voornaam' => $voornaam, 'achternaam' => $achternaam, 'email' => $email, 'telnr' => $telnr, 'project_omschrijving' => $project_omschrijving), array('id' => $id), array($voornaam, $achternaam, $email, $telnr, $project_omschrijving)));
         $wpdb->query("UPDATE pp_projects SET voornaam = '$voornaam', achternaam = '$achternaam', email = '$email', telefoon_nr = '$telnr', project_omschrijving = '$project_omschrijving' WHERE id = $id");
     }
 

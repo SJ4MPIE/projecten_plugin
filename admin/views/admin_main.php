@@ -42,10 +42,13 @@ $post_inputs = $project->getPostValues();
                     }
                 }
 
+                if($_GET['decline']){
+                    $msg = "Je aanvraag voor project is afgewezen";
+                    mail("someone@example.com","Projecten Plugin",$msg);
+                }
+                // echo "</br>" . "Query executed is" . $wpdb->last_query;
+                // echo "</br>" . "Last error" . $wpdb->last_error;
                 // var_dump($result_new);
-                echo "</br>" . "Query executed is" . $wpdb->last_query;
-                echo "</br>" . "Last error" . $wpdb->last_error;
-                var_dump($result_new);
                 ?>
             </tbody>
         </table>
@@ -78,6 +81,7 @@ $post_inputs = $project->getPostValues();
                     echo "<td>" . "<a href='admin.php?page=projecten+plugin&delete&id={$pp_id}'> Delete </a>" . "</td>";
                     echo "<td>" . "<a href='admin.php?page=projecten+plugin&update&id={$pp_id}'> Update </a>" . "</td>";
                 }
+                $project->updateStatus();
                 ?>
         </table>
     </div>
@@ -95,21 +99,23 @@ $post_inputs = $project->getPostValues();
                 <input class="form-control" type="text" name="voornaam" value="<?php echo $project->getFirstName($this_id); ?>" placeholder="voornaam">
                 <input class="form-control" type="text" name="achternaam" value="<?php echo $project->getLastName($this_id); ?>" placeholder="achternaam">
                 <input class="form-control" type="text" name="email" value="<?php echo $project->getEmail($this_id); ?>" placeholder="email">
-                <input class="form-control" type="text" name="telefoon" value="<?php echo $project->getTelNr($this_id); ?>"  placeholder="telefoon nr">
+                <input class="form-control" type="text" name="telefoon_nr" value="<?php echo $project->getTelNr($this_id); ?>"  placeholder="telefoon nr">
                 <textarea name="project_omschrijving" cols="30" rows="10"></textarea>
                 <input type="submit" name="Update">
             </form>
         <?php
          }
             $this_id = $_GET['id'];
-            if($_POST["Update"]){
-                $project->updateProject($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], (string) $post_inputs['telefoon'], $post_inputs['project_omschrijving'], $this_id);
+            if(isset($_POST["Update"])){
+                $project->updateProject($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving'], $this_id);
                 }
 
-                echo "</br>" . "Query executed is" . $wpdb->last_query;
-            echo "</br>" . "Last error" . $wpdb->last_error;
-            
-            var_dump($post_inputs);
+                if(isset($_GET['decline'])){
+                    echo "lol";
+                    $msg = "Je aanvraag voor project is afgewezen";
+                    mail($project->getEmail($this_id),"Projecten Plugin",$msg);
+                    var_dump($project->getEmail($this_id));
+                }
             
         
         ?>
