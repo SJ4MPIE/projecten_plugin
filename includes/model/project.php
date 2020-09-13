@@ -93,11 +93,11 @@ class Project
         if (isset($_GET['approve'])) {
             global $wpdb;
             $project_id = $_GET['id'];
-            $wpdb->query("UPDATE pp_projects SET status_id = 1 WHERE id = '$project_id'");
+            $wpdb->query("UPDATE pp_projects SET status_id = 2 WHERE id = '$project_id'");
         } elseif (isset($_GET['decline'])) {
             global $wpdb;
             $project_id = $_GET['id'];
-            $wpdb->query("UPDATE pp_projects SET status_id = 2 WHERE id = '$project_id'");
+            $wpdb->query("UPDATE pp_projects SET status_id = 3 WHERE id = '$project_id'");
         } else {
             return null;
         }
@@ -113,9 +113,30 @@ class Project
 
         global $wpdb;
         $wpdb->query("UPDATE pp_projects SET voornaam = '$voornaam', achternaam = '$achternaam', email = '$email', telefoon_nr = '$telnr', project_omschrijving = '$project_omschrijving' WHERE id = $id");
-        $redirect =  wp_redirect("http://localhost:8888/projects/projecten_plugin/wordpress/wp-admin/admin.php?page=projecten+plugin", 301, 'WordPress');
-        var_dump($redirect);
     }
+
+    /**      
+     * getProjectRows :      
+     * get rows from table pp_projects      
+     * @return array
+     */
+    public function getProjectRows(){
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk", ARRAY_A);
+        return $result;
+    }
+
+   /**      
+     * getApprovedRows :      
+     * get rows from table pp_projects where status_id = 2       
+     * @return array
+     */
+    public function getApprovedRows(){
+        global $wpdb;
+        $result = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk WHERE pp_projects.status_id = 2", ARRAY_A);
+        return $result;
+    }
+    
 
     /**      
      * getFirstName :      

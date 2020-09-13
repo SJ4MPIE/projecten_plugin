@@ -27,7 +27,7 @@ $current_id = $_GET['id'];
                 <?php
                 //Loops through $result_new and outputs the rows from DB
                 global $wpdb;
-                $result_new = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk", ARRAY_A);
+                $result_new = $project->getProjectRows();
                 foreach ($result_new as $row) {
                     $pp_id = $row['id'];
 
@@ -69,7 +69,7 @@ $current_id = $_GET['id'];
                 <?php
                 //Loops through $result_approved and outputs the rows from DB
                 global $wpdb;
-                $result_approved = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk WHERE pp_projects.status_id = 1", ARRAY_A);
+                $result_approved = $project->getApprovedRows();
                 foreach ($result_approved as $row) {
                     $pp_id = $row['id'];
                     echo "<tr><td>" . $row['id'] . "</td>";
