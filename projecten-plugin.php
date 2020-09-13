@@ -55,8 +55,8 @@ class ProjectenPlugin
             $this->createAdmin();
         }
 
-        // Load the view shortcodes 
-        $this->loadViews();
+            // Load the view shortcodes 
+            $this->loadViews();
 
             global $project;
             $project->createMainTable();
