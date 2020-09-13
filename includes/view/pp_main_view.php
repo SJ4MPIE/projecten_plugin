@@ -17,12 +17,10 @@ $post_inputs = $project->getPostValues();
     <input type="submit" name="verzenden">
 </form>
 
-<?php 
-if(isset($_POST['verzenden'])){
+<?php
+//Whenever user clicks on submit button the values will be saved to DB
+if (isset($_POST['verzenden'])) {
     $project->save($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving']);
-
 }
-        echo "</br>". "Query executed is".$wpdb->last_query;
-        echo "</br>". "Last error".$wpdb->last_error;
 
 ?>

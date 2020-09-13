@@ -58,13 +58,13 @@ class ProjectenPlugin
         // Load the view shortcodes 
         $this->loadViews();
 
-            global $project;
-            $project->createMainTable();
-            $project->createStatusTable();
-            // $project->insertStatusValues();
+        //Creates tables on startup 
+        global $project;
+        $project->createMainTable();
+        $project->createStatusTable();
     }
 
-    
+
     /**
      * Loads all admin related files into scope.
      *
