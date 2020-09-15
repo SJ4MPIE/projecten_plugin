@@ -133,7 +133,6 @@ class Project
      */
     public function updateStatus()
     {
-        if (current_user_can('pp_update')) {
             $getValues = $this->getGetValues();
             $getValues_id = $getValues['id'];
             if (isset($getValues['approve'])) {
@@ -147,7 +146,6 @@ class Project
             }
 
             var_dump($getValues);
-        }
     }
 
     /**      
@@ -172,20 +170,108 @@ class Project
      */
     public function getProjectRows()
     {
-        if (current_user_can('pp_read')) {
+        $return_array = array();
             global $wpdb;
-            $result = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk", ARRAY_A);
-            return $result;
-            // Print last SQL query string
-            echo $wpdb->last_query;
+            $result_array = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk", ARRAY_A);
+            // var_dump($result);
 
-            // Print last SQL query result
-            echo $wpdb->last_result;
+            foreach($result_array as $idx => $array){
+                $schema = new Project;
+                $schema->setId($array['id']);
+                $schema->setVoornaam($array['voornaam']);
+                $schema->setAchternaam($array['achternaam']);
+                $schema->setEmail($array['email']);
+                $schema->setTelNr($array['telefoon_nr']);
+                $schema->setOmschrijving($array['project_omschrijving']);
+                $schema->setStatus($array['status']);
 
-            // Print last SQL query Error
-            echo $wpdb->last_error;
-        }
+                $return_array[] = $schema;
+
+            }
+            return $return_array;
     }
+
+
+    public function setId($id){
+            $this->id = $id;
+    }
+
+    public function setVoornaam($voornaam){
+        if(is_string($voornaam)){
+            $this->voornaam = trim($voornaam);
+        }
+
+    }
+
+    public function setAchternaam($achternaam){
+        if(is_string($achternaam)){
+            $this->achternaam = trim($achternaam);
+        }
+
+    }
+
+    public function setEmail($email){
+        if(is_string($email)){
+            $this->email = $email;
+        }
+
+    }
+
+    public function setTelNr($telnr){
+        $this->telnr = $telnr;
+        }
+
+
+    public function setOmschrijving($omschrijving){
+        if(is_string($omschrijving)){
+            $this->omschrijving = $omschrijving;
+        }
+
+    }
+
+    public function setStatus($status){
+        if(is_string($status)){
+            $this->status = $status;
+        }
+
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function getVoornaam(){
+        return $this->voornaam;
+        var_dump($this->voornaam);
+    }
+
+
+    public function getAchternaam(){
+        return $this->achternaam;
+    }
+
+    public function getEmail(){
+        return $this->email;
+
+
+    }
+
+    public function getTelNr(){
+        return $this->telnr;
+    }
+
+
+    public function getOmschrijving(){
+        return $this->omschrijving;
+
+    }
+
+
+    public function getStatus(){
+        return $this->status;
+    }
+
+
 
     /**      
      * getApprovedRows :      
@@ -193,13 +279,106 @@ class Project
      * @return array
      */
     public function getApprovedRows()
-    {
-        if (current_user_can('pp_read')) {
+    {       
+            $return_array = array();
             global $wpdb;
-            $result = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk WHERE pp_projects.status_id = 2 ", ARRAY_A);
-            return $result;
-        }
+            $result_array = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk WHERE pp_projects.status_id = 2 ", ARRAY_A);
+
+            foreach($result_array as $idx => $array){
+                $schema = new Project;
+                $schema->setApprovedId($array['id']);
+                $schema->setApprovedVoornaam($array['voornaam']);
+                $schema->setApprovedAchternaam($array['achternaam']);
+                $schema->setApprovedEmail($array['email']);
+                $schema->setApprovedTelNr($array['telefoon_nr']);
+                $schema->setApprovedOmschrijving($array['project_omschrijving']);
+                $schema->setApprovedStatus($array['status']);
+
+                $return_array[] = $schema;
+
+            }
+            return $return_array;
     }
+
+    public function setApprovedId($id){
+        $this->id = $id;
+    }
+
+    public function setApprovedVoornaam($voornaam){
+        if(is_string($voornaam)){
+            $this->voornaam = trim($voornaam);
+        }
+
+    }
+
+    public function setApprovedAchternaam($achternaam){
+        if(is_string($achternaam)){
+            $this->achternaam = trim($achternaam);
+        }
+
+    }
+
+    public function setApprovedEmail($email){
+        if(is_string($email)){
+            $this->email = $email;
+        }
+
+    }
+
+    public function setApprovedTelNr($telnr){
+        $this->telnr = $telnr;
+        }
+
+
+    public function setApprovedOmschrijving($omschrijving){
+        if(is_string($omschrijving)){
+            $this->omschrijving = $omschrijving;
+        }
+
+    }
+
+    public function setApprovedStatus($status){
+        if(is_string($status)){
+            $this->status = $status;
+        }
+
+    }
+
+    public function getApprovedId(){
+        return $this->id;
+    }
+
+    public function getApprovedVoornaam(){
+        return $this->voornaam;
+        var_dump($this->voornaam);
+    }
+
+
+    public function getApprovedAchternaam(){
+        return $this->achternaam;
+    }
+
+    public function getApprovedEmail(){
+        return $this->email;
+
+
+    }
+
+    public function getApprovedTelNr(){
+        return $this->telnr;
+    }
+
+
+    public function getApprovedOmschrijving(){
+        return $this->omschrijving;
+
+    }
+
+
+    public function getApprovedStatus(){
+        return $this->status;
+    }
+
 
 
     /**      
@@ -235,7 +414,7 @@ class Project
      * Get the email of the row that has been selected     
      * @return string returns the email  
      */
-    public function getEmail($id)
+    public function getEmailValue($id)
     {
         global $wpdb;
         $result_query = $wpdb->get_results("SELECT email FROM pp_projects WHERE id = $id LIMIT 1", ARRAY_A);
@@ -249,7 +428,7 @@ class Project
      * Get the phone number of the row that has been selected     
      * @return string returns the phone number.  
      */
-    public function getTelNr($pp_id)
+    public function getTelNrValue($pp_id)
     {
         global $wpdb;
         $result_query = $wpdb->get_results("SELECT telefoon_nr FROM pp_projects WHERE id = $pp_id LIMIT 1", ARRAY_A);

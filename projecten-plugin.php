@@ -67,8 +67,57 @@ class ProjectenPlugin
         Project::createMainTable();
         Project::createStatusTable();
         Project::insertStatusTable();
+        ProjectenPlugin::add_plugin_caps();
     }
 
+    public static function get_plugin_roles_and_caps(){
+
+        // Define the desired roles for this plugin:
+        return array (
+            /* Is always available - Should be on firsth line */
+            array('klant',
+                'Klant',
+                array( 'pp_create') )
+        );
+
+    }
+
+
+    public static function add_plugin_caps() {
+
+        // Include the roles and capabilities definition file:
+        require_once plugin_dir_path( __FILE__ ) . 'includes/roles_and_caps_defs.php';
+
+        $role_array = ProjectenPlugin::get_plugin_roles_and_caps();
+
+        // Check for the roles:
+        foreach ($role_array as $key => $role_name) {
+            // Check specific role
+            if( !( $GLOBALS['wp_roles']->is_role( $role_name[PP_ROLE_NAME] )) ){
+
+                // Create role
+                $role = add_role(   $role_name[PP_ROLE_NAME],
+                                    $role_name[PP_ROLE_ALIAS], array('read' => true, 'level_0' => true));
+            } else {
+                var_dump($role);
+            }
+            // else : role exists
+        }
+
+        #exit( var_dump( $_GET ). var_dump($role) );
+
+        // Add the capabilities per role
+        foreach ($role_array as $key => $role_name) {
+            // Create the caps for this role
+            foreach ($role_name[PP_ROLE_CAP_ARRAY] as $cap_key => $cap_name) {
+                // gets the author role
+                $role = get_role( $role_name[PP_ROLE_NAME] );
+                // This only works, because it accesses the class instance.
+                // would allow the author to edit others' posts for current theme only
+                $role->add_cap( $cap_name );
+            }
+        }
+    }
 
     /**
      * Loads all admin related files into scope.
