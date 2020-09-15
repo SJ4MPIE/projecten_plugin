@@ -3,12 +3,11 @@
 ?>
 <?php
 $project = new Project;
-$project2 = new Project();
 // Get form vars
 $post_inputs = $project->getPostValues();
 $get_inputs = $project->getGetValues();
 //get current id 
-$current_id = $get_inputs['id'];
+$pp_id = $project->getId();
 ?>
 <div class="row">
     <div class="col-lg-6">
@@ -30,7 +29,6 @@ $current_id = $get_inputs['id'];
                 //Loops through $result_new and outputs the rows from DB
                 global $wpdb;
                 $result_new = $project->getProjectRows();
-                $pp_id = $project->getId();
                     foreach($result_new as $each_row){
                             $pp_id = $each_row->getId();
                             echo "<tr><td>" . $each_row->getId() . "</td>";
@@ -109,12 +107,7 @@ $current_id = $get_inputs['id'];
         //Whenever the admin clicks on update the values will be sent to updateProject();
         if (isset($_POST["Update"])) {
             $project->updateProject($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving'], $current_id);
-
-            echo "</br>" . "Query executed is" . $wpdb->last_query;
-            echo "</br>" . "Last error" . $wpdb->last_error;
         }
-
-        //whenever the admin clicks on decline the user receives a mail.
 
         ?>
 
