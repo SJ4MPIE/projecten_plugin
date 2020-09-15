@@ -26,16 +26,18 @@ define('PROJECTEN_PLUGIN', __FILE__);
 require_once plugin_dir_path(__FILE__) . 'includes/defs.php';
 
 require_once PROJECTEN_PLUGIN_MODEL_DIR . '/project.php';
-$project = new Project;
-
+register_activation_hook(__FILE__, array('ProjectenPlugin', 'on_activation'));
 class ProjectenPlugin
 {
+    private $project = "";
+
     public function __construct()
     {
         // Fire a hook before the class is setup.
         do_action('projecten_plugin_pre_init');
         // Load the plugin.
         add_action('init', array($this, 'init'), 1);
+        $this->project = new Project;
     }
 
     /**
@@ -55,13 +57,16 @@ class ProjectenPlugin
             $this->createAdmin();
         }
 
-            // Load the view shortcodes 
-            $this->loadViews();
+        // Load the view shortcodes 
+        $this->loadViews();
+    }
 
-        //Creates tables on startup 
-        global $project;
-        $project->createMainTable();
-        $project->createStatusTable();
+    public static function on_activation()
+    {
+        //Creates tables on startup
+        Project::createMainTable();
+        Project::createStatusTable();
+        Project::insertStatusTable();
     }
 
 

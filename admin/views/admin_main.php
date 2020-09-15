@@ -5,8 +5,9 @@
 $project = new Project;
 // Get form vars
 $post_inputs = $project->getPostValues();
+$get_inputs = $project->getGetValues();
 //get current id 
-$current_id = $_GET['id'];
+$current_id = $get_inputs['id'];
 ?>
 <div class="row">
     <div class="col-lg-6">
@@ -39,16 +40,24 @@ $current_id = $_GET['id'];
                     echo "<td>" . $row['project_omschrijving'] . "</td>";
                     echo "<td>" . $row['status'] . "</td>";
 
-                    if ($row['status'] ==  'Geen status') {
+                    if ($row['status'] ==  'In afwachting') {
                         echo "<td>" . "<a href='admin.php?page=projecten+plugin&approve&id={$pp_id}&new'> Approve </a>" . "</td>";
                         echo "<td>" . "<a href='admin.php?page=projecten+plugin&decline&id={$pp_id}&new'> Decline </a>" . "</td>";
                     }
                 }
+                // var_dump($get_inputs);
+                // if (!empty($get_inputs['decline'])) {
+                //     $msg = "Je aanvraag voor project is afgewezen";
+                //     mail("someone@example.com", "Projecten Plugin", $msg);
+                // }
+                // Print last SQL query string
+                echo $wpdb->last_query;
 
-                if ($_GET['decline']) {
-                    $msg = "Je aanvraag voor project is afgewezen";
-                    mail("someone@example.com", "Projecten Plugin", $msg);
-                }
+                // Print last SQL query result
+                echo $wpdb->last_result;
+
+                // Print last SQL query Error
+                echo $wpdb->last_error;
                 ?>
             </tbody>
         </table>
@@ -93,7 +102,7 @@ $current_id = $_GET['id'];
         $project->delete();
         $project->updateStatus();
         //Whenever the admin clicks on update the update-form will be shown. 
-        if (isset($_GET['update'])) {
+        if (isset($get_inputs['update'])) {
         ?>
             <h1>Update project</h1>
             <form method="post" class="form-group">
@@ -115,12 +124,13 @@ $current_id = $_GET['id'];
         }
 
         //whenever the admin clicks on decline the user receives a mail.
-        if (isset($_GET['decline'])) {
+        if (isset($get_inputs['id'])) {
             $msg = "Je aanvraag voor project is afgewezen";
             mail($project->getEmail($current_id), "Projecten Plugin", $msg);
         }
 
         ?>
+
         </tbody>
 
     </div>

@@ -26,17 +26,42 @@ class Project
             'project_omschrijving' => array('filter' => FILTER_SANITIZE_STRING)
         );
         // Get filtered input:
-        $inputs = filter_input_array(INPUT_POST, $post_check_array);
+        $post_inputs = filter_input_array(INPUT_POST, $post_check_array);
         // RTS
-        return $inputs;
+        return $post_inputs;
     }
+
+    public function getGetValues()
+    {
+
+        // Define the check for params
+        $get_check_array = array(
+            // submit action
+            'id' => array('filter' => FILTER_SANITIZE_STRING),
+            // List all update form fields !!!
+            // event type name.
+            'approve' => array('filter' => FILTER_SANITIZE_STRING),
+            // Help text
+            'decline' => array('filter' => FILTER_SANITIZE_STRING),
+
+            'update' => array('filter' => FILTER_SANITIZE_STRING),
+
+            'delete' => array('filter' => FILTER_SANITIZE_STRING)
+            // Id of current row
+        );
+        // Get filtered input:
+        $get_inputs = filter_input_array(INPUT_GET, $get_check_array);
+        // RTS
+        return $get_inputs;
+    }
+
     /**
      * createMainTable :
      * Creates pp_projects table in database
      * 
      * @return bool if query succeed or not 
      */
-    public function createMainTable()
+    public static function createMainTable()
     {
         global $wpdb;
         $wpdb->query("CREATE TABLE `projecten_plugin`. `pp_projects`( `id` INT NOT NULL AUTO_INCREMENT , `voornaam` VARCHAR(255) NOT NULL , `achternaam` VARCHAR(255) NOT NULL , `email` VARCHAR(255) NOT NULL , `telefoon_nr` VARCHAR(255) NOT NULL , `project_omschrijving` TEXT NOT NULL , `status_id` INT NOT NULL DEFAULT '1' , PRIMARY KEY (`id`)) ENGINE = InnoDB;");
@@ -48,10 +73,22 @@ class Project
      * 
      * @return bool if query succeed or not 
      */
-    public function createStatusTable()
+    public static  function createStatusTable()
     {
         global $wpdb;
         $wpdb->query("CREATE TABLE `projecten_plugin`.`pp_status` ( `status_id_pk` INT NOT NULL AUTO_INCREMENT , `status` VARCHAR(255) NOT NULL , PRIMARY KEY (`status_id_pk`)) ENGINE = InnoDB; ");
+    }
+
+    /**
+     * insertStatusTable :
+     * insert values to pp_stauts
+     * 
+     * @return bool if query succeed or not 
+     */
+    public static function insertStatusTable()
+    {
+        global $wpdb;
+        $wpdb->query("INSERT INTO `pp_status` (`status_id_pk`, `status`) VALUES (NULL, 'In afwachting'), (NULL, 'Goedgekeurd'), (NULL, 'Afgekeurd')");
     }
 
 
@@ -62,10 +99,12 @@ class Project
      */
     public function save($voornaam, $achternaam, $email, $telnr, $project_omschrijving)
     {
-        global $wpdb;
-        if (isset($_POST['verzenden'])) {
-            $sql = $wpdb->prepare("INSERT INTO pp_projects(`voornaam`, `achternaam`, `email`, `telefoon_nr`, `project_omschrijving`) VALUES ('$voornaam','$achternaam','$email','$telnr', '$project_omschrijving') ");
-            $wpdb->query($sql);
+        if (current_user_can('pp_create')) {
+            global $wpdb;
+            if (isset($_POST['verzenden'])) {
+                $sql = $wpdb->prepare("INSERT INTO pp_projects(`voornaam`, `achternaam`, `email`, `telefoon_nr`, `project_omschrijving`) VALUES ('$voornaam','$achternaam','$email','$telnr', '$project_omschrijving') ");
+                $wpdb->query($sql);
+            }
         }
     }
 
@@ -76,12 +115,16 @@ class Project
      */
     public function delete()
     {
-        if (isset($_GET['delete'])) {
-            global $wpdb;
-            $project_id = $_GET['id'];
-            $wpdb->query("DELETE FROM pp_projects WHERE ID = '$project_id'");
+        if (current_user_can('pp_delete')) {
+            $getValues =  $this->getGetValues();
+            $getValues_id = $getValues['id'];
+            if (isset($getvalues['delete'])) {
+                global $wpdb;
+                $wpdb->query("DELETE FROM pp_projects WHERE ID = $getValues_id");
+            }
         }
     }
+
 
     /**      
      * updateStatus :      
@@ -90,16 +133,20 @@ class Project
      */
     public function updateStatus()
     {
-        if (isset($_GET['approve'])) {
-            global $wpdb;
-            $project_id = $_GET['id'];
-            $wpdb->query("UPDATE pp_projects SET status_id = 2 WHERE id = '$project_id'");
-        } elseif (isset($_GET['decline'])) {
-            global $wpdb;
-            $project_id = $_GET['id'];
-            $wpdb->query("UPDATE pp_projects SET status_id = 3 WHERE id = '$project_id'");
-        } else {
-            return null;
+        if (current_user_can('pp_update')) {
+            $getValues = $this->getGetValues();
+            $getValues_id = $getValues['id'];
+            if (isset($getValues['approve'])) {
+                global $wpdb;
+                $wpdb->query("UPDATE pp_projects SET status_id = 2 WHERE id = '$getValues_id'");
+            } elseif (isset($getValues['decline'])) {
+                global $wpdb;
+                $wpdb->query("UPDATE pp_projects SET status_id = 3 WHERE id = '$getValues_id'");
+            } else {
+                return null;
+            }
+
+            var_dump($getValues);
         }
     }
 
@@ -110,43 +157,60 @@ class Project
      */
     public function updateProject($voornaam, $achternaam, $email, $telnr, $project_omschrijving, $id)
     {
+        if (current_user_can('pp_update')) {
 
-        global $wpdb;
-        $wpdb->query("UPDATE pp_projects SET voornaam = '$voornaam', achternaam = '$achternaam', email = '$email', telefoon_nr = '$telnr', project_omschrijving = '$project_omschrijving' WHERE id = $id");
+            global $wpdb;
+            $wpdb->query("UPDATE pp_projects SET voornaam = '$voornaam', achternaam = '$achternaam', email = '$email', telefoon_nr = '$telnr', project_omschrijving = '$project_omschrijving' WHERE id = $id");
+        }
     }
+
 
     /**      
      * getProjectRows :      
      * get rows from table pp_projects      
      * @return array
      */
-    public function getProjectRows(){
-        global $wpdb;
-        $result = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk", ARRAY_A);
-        return $result;
+    public function getProjectRows()
+    {
+        if (current_user_can('pp_read')) {
+            global $wpdb;
+            $result = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk", ARRAY_A);
+            return $result;
+            // Print last SQL query string
+            echo $wpdb->last_query;
+
+            // Print last SQL query result
+            echo $wpdb->last_result;
+
+            // Print last SQL query Error
+            echo $wpdb->last_error;
+        }
     }
 
-   /**      
+    /**      
      * getApprovedRows :      
      * get rows from table pp_projects where status_id = 2       
      * @return array
      */
-    public function getApprovedRows(){
-        global $wpdb;
-        $result = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk WHERE pp_projects.status_id = 2", ARRAY_A);
-        return $result;
+    public function getApprovedRows()
+    {
+        if (current_user_can('pp_read')) {
+            global $wpdb;
+            $result = $wpdb->get_results("SELECT *, pp_status.status FROM pp_projects INNER JOIN pp_status ON pp_projects.status_id = pp_status.status_id_pk WHERE pp_projects.status_id = 2 ", ARRAY_A);
+            return $result;
+        }
     }
-    
+
 
     /**      
      * getFirstName :      
      * Get the firstname of the row that has been selected     
      * @return string returns the firstname 
      */
-    public function getFirstName($pp_id)
+    public function getFirstName($id)
     {
         global $wpdb;
-        $result_query = $wpdb->get_results("SELECT voornaam FROM pp_projects WHERE id = $pp_id LIMIT 1", ARRAY_A);
+        $result_query = $wpdb->get_results("SELECT voornaam FROM pp_projects WHERE id = $id LIMIT 1", ARRAY_A);
         foreach ($result_query as $row) {
             return $row['voornaam'];
         }
@@ -157,10 +221,10 @@ class Project
      * Get the lastname of the row that has been selected     
      * @return string returns the lastname 
      */
-    public function getLastName($pp_id)
+    public function getLastName($id)
     {
         global $wpdb;
-        $result_query = $wpdb->get_results("SELECT achternaam FROM pp_projects WHERE id = $pp_id LIMIT 1", ARRAY_A);
+        $result_query = $wpdb->get_results("SELECT achternaam FROM pp_projects WHERE id = $id LIMIT 1", ARRAY_A);
         foreach ($result_query as $row) {
             return $row['achternaam'];
         }
@@ -171,10 +235,10 @@ class Project
      * Get the email of the row that has been selected     
      * @return string returns the email  
      */
-    public function getEmail($pp_id)
+    public function getEmail($id)
     {
         global $wpdb;
-        $result_query = $wpdb->get_results("SELECT email FROM pp_projects WHERE id = $pp_id LIMIT 1", ARRAY_A);
+        $result_query = $wpdb->get_results("SELECT email FROM pp_projects WHERE id = $id LIMIT 1", ARRAY_A);
         foreach ($result_query as $row) {
             return $row['email'];
         }
