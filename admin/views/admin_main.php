@@ -82,6 +82,7 @@ $current_id = $get_inputs['id'];
                 }
 
                 $project->updateStatus();
+                $project->delete();
                 ?>
         </table>
     </div>

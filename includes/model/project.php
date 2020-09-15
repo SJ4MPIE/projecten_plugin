@@ -115,14 +115,12 @@ class Project
      */
     public function delete()
     {
-        if (current_user_can('pp_delete')) {
             $getValues =  $this->getGetValues();
             $getValues_id = $getValues['id'];
-            if (isset($getvalues['delete'])) {
+            if (isset($getValues['delete'])) {
                 global $wpdb;
                 $wpdb->query("DELETE FROM pp_projects WHERE ID = $getValues_id");
             }
-        }
     }
 
 
