@@ -42,7 +42,7 @@ $pp_id = $project->getId();
 
                         if ($each_row->getStatus() ==  'In afwachting') {
                             echo "<td>" . "<a href='admin.php?page=projecten+plugin&approve&id={$pp_id}&new'> Approve </a>" . "</td>";
-                            echo "<td>" . "<a href='admin.php?page=projecten+plugin&decline&id={$pp_id}&new'> Decline </a>" . "</td>";
+                            echo "<td>" . "<a href='admin.php?page=projecten+plugin&decline&id={$pp_id}&new'> Decline </a>" . "</td></tr>";
                         }
                     }
                 ?>
@@ -76,7 +76,7 @@ $pp_id = $project->getId();
                     echo "<td>" .  $each_row->getApprovedOmschrijving() . "</td>";
                     echo "<td>" .  $each_row->getApprovedStatus()  . "</td>";
                     echo "<td>" . "<a href='admin.php?page=projecten+plugin&delete&id={$pp_id}'> Delete </a>" . "</td>";
-                    echo "<td>" . "<a href='admin.php?page=projecten+plugin&update&id={$pp_id}'> Update </a>" . "</td>";
+                    echo "<td>" . "<a href='admin.php?page=projecten+plugin&update&id={$pp_id}'> Update </a>" . "</td></tr>";
                 }
 
                 $project->updateStatus();
@@ -95,10 +95,10 @@ $pp_id = $project->getId();
         ?>
             <h1>Update project</h1>
             <form method="post" class="form-group">
-                <input class="form-control" type="text" name="voornaam" value="<?php echo $project->getFirstName($current_id); ?>" placeholder="voornaam">
-                <input class="form-control" type="text" name="achternaam" value="<?php echo $project->getLastName($current_id); ?>" placeholder="achternaam">
-                <input class="form-control" type="text" name="email" value="<?php echo $project->getEmailValue($current_id); ?>" placeholder="email">
-                <input class="form-control" type="text" name="telefoon_nr" value="<?php echo $project->getTelNrValue($current_id); ?>" placeholder="telefoon nr">
+                <input class="form-control" type="text" name="voornaam" value="<?php echo $project->getFirstName($pp_id); ?>" placeholder="voornaam">
+                <input class="form-control" type="text" name="achternaam" value="<?php echo $project->getLastName($pp_id); ?>" placeholder="achternaam">
+                <input class="form-control" type="text" name="email" value="<?php echo $project->getEmailValue($pp_id); ?>" placeholder="email">
+                <input class="form-control" type="text" name="telefoon_nr" value="<?php echo $project->getTelNrValue($pp_id); ?>" placeholder="telefoon nr">
                 <textarea name="project_omschrijving" cols="30" rows="10"></textarea>
                 <input type="submit" name="Update">
             </form>
@@ -106,7 +106,7 @@ $pp_id = $project->getId();
         }
         //Whenever the admin clicks on update the values will be sent to updateProject();
         if (isset($_POST["Update"])) {
-            $project->updateProject($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving'], $current_id);
+            $project->updateProject($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving'], $pp_id);
         }
 
         ?>

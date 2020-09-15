@@ -153,11 +153,9 @@ class Project
      */
     public function updateProject($voornaam, $achternaam, $email, $telnr, $project_omschrijving, $id)
     {
-        if (current_user_can('pp_update')) {
 
             global $wpdb;
             $wpdb->query("UPDATE pp_projects SET voornaam = '$voornaam', achternaam = '$achternaam', email = '$email', telefoon_nr = '$telnr', project_omschrijving = '$project_omschrijving' WHERE id = $id");
-        }
     }
 
 
