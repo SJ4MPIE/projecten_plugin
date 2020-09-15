@@ -100,12 +100,12 @@ $pp_id = $project->getId();
                 <input class="form-control" type="text" name="email" value="<?php echo $project->getEmailValue($pp_id); ?>" placeholder="email">
                 <input class="form-control" type="text" name="telefoon_nr" value="<?php echo $project->getTelNrValue($pp_id); ?>" placeholder="telefoon nr">
                 <textarea name="project_omschrijving" cols="30" rows="10"></textarea>
-                <input type="submit" name="Update">
+                <input type="submit" name="updateValues">
             </form>
         <?php
         }
         //Whenever the admin clicks on update the values will be sent to updateProject();
-        if (isset($_POST["Update"])) {
+        if (isset($_POST["updateValues"])) {
             $project->updateProject($post_inputs['voornaam'], $post_inputs['achternaam'], $post_inputs['email'], $post_inputs['telefoon_nr'], $post_inputs['project_omschrijving'], $pp_id);
         }
 

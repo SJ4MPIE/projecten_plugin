@@ -46,7 +46,9 @@ class Project
 
             'update' => array('filter' => FILTER_SANITIZE_STRING),
 
-            'delete' => array('filter' => FILTER_SANITIZE_STRING)
+            'delete' => array('filter' => FILTER_SANITIZE_STRING),
+
+            'updateValues' => array('filter' => FILTER_SANITIZE_STRING)
             // Id of current row
         );
         // Get filtered input:
@@ -142,8 +144,6 @@ class Project
             } else {
                 return null;
             }
-
-            var_dump($getValues);
     }
 
     /**      
@@ -187,87 +187,142 @@ class Project
             return $return_array;
     }
 
-
+    /**      
+     * setId :      
+     * set id to variable      
+     * @return $id
+     */
     public function setId($id){
             $this->id = $id;
     }
 
+    /**      
+     * setVoornaam :      
+     * set voornaam to variable      
+     * @return $voornaam
+     */
     public function setVoornaam($voornaam){
         if(is_string($voornaam)){
             $this->voornaam = trim($voornaam);
         }
-
     }
 
+    /**      
+     * setAchternaam :      
+     * set achternaam to variable      
+     * @return $achternaam
+     */
     public function setAchternaam($achternaam){
         if(is_string($achternaam)){
             $this->achternaam = trim($achternaam);
         }
-
     }
 
+    /**      
+     * setEmail :      
+     * set email to variable      
+     * @return $email
+     */
     public function setEmail($email){
         if(is_string($email)){
             $this->email = $email;
         }
-
     }
 
+    /**      
+     * setTelNr :      
+     * set telefoon nr  to variable      
+     * @return $telnr
+     */
     public function setTelNr($telnr){
         $this->telnr = $telnr;
         }
 
-
+    
+    /**      
+     * setOmschrijving :      
+     * set project omschrijving  to variable      
+     * @return $omschrijving
+     */
     public function setOmschrijving($omschrijving){
         if(is_string($omschrijving)){
             $this->omschrijving = $omschrijving;
         }
-
     }
 
+    /**      
+     * setStatus :      
+     * set status to variable      
+     * @return $status
+     */
     public function setStatus($status){
         if(is_string($status)){
             $this->status = $status;
         }
-
     }
 
+    /**      
+     * getId :      
+     * get id       
+     * @return $id
+     */
     public function getId(){
         return $this->id;
     }
 
+    /**      
+     * getVoornaam :      
+     * get voornaam       
+     * @return $voornaam
+     */
     public function getVoornaam(){
         return $this->voornaam;
-        var_dump($this->voornaam);
     }
 
-
+    /**      
+     * getAchternaam :      
+     * get achternaam       
+     * @return $achternaam
+     */
     public function getAchternaam(){
         return $this->achternaam;
     }
 
+    /**      
+     * getEmail :      
+     * get email       
+     * @return $email
+     */
     public function getEmail(){
         return $this->email;
-
-
     }
 
+    /**      
+     * getTelNr :      
+     * get telefoon nr       
+     * @return $telnr
+     */
     public function getTelNr(){
         return $this->telnr;
     }
 
-
+    /**      
+     * getOmschrijving :      
+     * get project omschrijving       
+     * @return $omschrijving
+     */
     public function getOmschrijving(){
         return $this->omschrijving;
-
     }
 
-
+    /**      
+     * getStatus :      
+     * get status       
+     * @return $status
+     */
     public function getStatus(){
         return $this->status;
     }
-
-
 
     /**      
      * getApprovedRows :      
@@ -296,24 +351,42 @@ class Project
             return $return_array;
     }
 
+    /**      
+     * setApprovedId :      
+     * set approved id to variable      
+     * @return $id
+     */
     public function setApprovedId($id){
         $this->id = $id;
     }
 
+    /**      
+     * setApprovedVoornaam :      
+     * set approved voornaam to variable      
+     * @return $voornaam
+     */
     public function setApprovedVoornaam($voornaam){
         if(is_string($voornaam)){
             $this->voornaam = trim($voornaam);
         }
-
     }
 
+    /**      
+     * setApprovedAchternaam :      
+     * set approved achternaam to variable      
+     * @return $achternaam
+     */
     public function setApprovedAchternaam($achternaam){
         if(is_string($achternaam)){
             $this->achternaam = trim($achternaam);
         }
-
     }
 
+    /**      
+     * setApprovedEmail :      
+     * set approved email to variable      
+     * @return $email
+     */
     public function setApprovedEmail($email){
         if(is_string($email)){
             $this->email = $email;
@@ -321,56 +394,100 @@ class Project
 
     }
 
+    /**      
+     * setApprovedTelNr :      
+     * set approved telefoon nr to variable      
+     * @return $telnr
+     */
     public function setApprovedTelNr($telnr){
         $this->telnr = $telnr;
-        }
+    }
 
-
+    
+    /**      
+     * setApprovedOmschrijving :      
+     * set approved project omschrijving to variable      
+     * @return $omschrijving
+     */
     public function setApprovedOmschrijving($omschrijving){
         if(is_string($omschrijving)){
             $this->omschrijving = $omschrijving;
         }
-
     }
 
+    /**      
+     * setApprovedStatus :      
+     * set approved status to variable      
+     * @return $status
+     */
     public function setApprovedStatus($status){
         if(is_string($status)){
             $this->status = $status;
         }
-
     }
 
+    /**      
+     * getApprovedId :      
+     * get approved id to variable      
+     * @return $id
+     */
     public function getApprovedId(){
         return $this->id;
     }
 
+    /**      
+     * getApprovedVoornaam :      
+     * get approved voornaam to variable      
+     * @return $id
+     */
     public function getApprovedVoornaam(){
         return $this->voornaam;
-        var_dump($this->voornaam);
     }
 
-
+    /**      
+     * getApprovedAchternaam :      
+     * get approved achternaam to variable      
+     * @return $achternaam
+     */
     public function getApprovedAchternaam(){
         return $this->achternaam;
     }
 
+    /**      
+     * getApprovedEmail :      
+     * get approved email to variable      
+     * @return $email
+     */
     public function getApprovedEmail(){
         return $this->email;
 
 
     }
 
+    /**      
+     * getApprovedTelNr :      
+     * get approved telefoon nr to variable      
+     * @return $telnr
+     */
     public function getApprovedTelNr(){
         return $this->telnr;
     }
 
-
+    /**      
+     * getApprovedOmschrijving :      
+     * get approved project omschrijving to variable      
+     * @return $omschrijving
+     */
     public function getApprovedOmschrijving(){
         return $this->omschrijving;
 
     }
 
-
+    /**      
+     * getApprovedStatus :      
+     * get approved status to variable      
+     * @return $status
+     */
     public function getApprovedStatus(){
         return $this->status;
     }
